@@ -5,10 +5,12 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
     branches:
       - develop
 jobs:
   build-features:
+    if: startsWith(github.head_ref, 'feature/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
