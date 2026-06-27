@@ -1,0 +1,34 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - develop
+jobs:
+  build-features:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v5.4.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compile project
+        run: mvn clean compile
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Build project
+        run: mvn package -DskipTests
