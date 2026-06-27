@@ -23,6 +23,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+          cache-dependency-path: '**/pom.xml'
+
+      - name: Download Maven dependencies
+        run: mvn -B -DskipTests dependency:go-offline
 
       - name: Compile project
         run: mvn clean compile
