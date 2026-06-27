@@ -1,0 +1,27 @@
+name: "primero workflow"
+on:
+  push:
+    branches:
+      - feature/*
+
+jobs:
+  build-features:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7.0.0
+    - name: Setup Java JDK
+      uses: actions/setup-java@v5.4.0
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Compile project
+      run: mvn clean compile
+
+    - name: Run tests
+      run: mvn test
+
+    - name: Build project
+      run: mvn package -DskipTests
